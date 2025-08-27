@@ -1,6 +1,7 @@
 #!/bin/bash
-current_dir=$(dirname "$(realpath "$0")")
-source "$current_dir"/env/bin/activate
-cd "$current_dir"
-python render.py
-
+CURRENT_DIR=$(dirname "$(realpath "$0")")
+SCRIPTS_DIR=scripts
+source "$CURRENT_DIR"/env/bin/activate
+cd "$CURRENT_DIR"
+python "$SCRIPTS_DIR/render.py"
+python "$SCRIPTS_DIR/hook_runner.py"

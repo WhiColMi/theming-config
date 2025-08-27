@@ -2,6 +2,8 @@ import os
 import json
 from jinja2 import Environment, FileSystemLoader
 
+print("Rendering pass: started")
+
 # === Config ===
 PALETTE_FILE = "palette.json"
 TEMPLATE_DIR = "templates"
@@ -23,11 +25,18 @@ for template_file in os.listdir(TEMPLATE_DIR):
     output = template.render(palette)
 
     base_name = template_file.replace(".j2", "")
-    splitted_path = base_name.split(".", base_name.count('.') - 1)
-    out_file_name = splitted_path.pop()
+    splitted_path = base_name.split(".")
+    
+    if splitted_path and len(splitted_path) > 1 and not splitted_path[-1] == "":
+        out_file_name = "{b}.{a}".format(a=splitted_path.pop(), b=splitted_path.pop())
+    else:
+        splitted_path.pop()
+        out_file_name = splitted_path.pop()
+
     conf_path = '/'.join(splitted_path)
 
     print(conf_path)
+    print(out_file_name)
 
     out_dir = os.path.join(OUTPUT_BASE_DIR, conf_path)
     os.makedirs(out_dir, exist_ok=True)
@@ -38,3 +47,4 @@ for template_file in os.listdir(TEMPLATE_DIR):
 
     print(f"✅ Rendered: {out_file}")
 
+print("Rendering pass: ended")
